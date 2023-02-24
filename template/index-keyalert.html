@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../vue.js"></script>
+
+    <div id="app">
+        <p>現在{{number}}回クリックされています</p>
+        <button v-on:click="countUp">カウントアップ</button>
+        <p v-on:mousemove="changeMousePosition">マウスを載せてください
+            <span v-on:mousemove.stop>反応しないでください</span>
+        </p>
+        <p>X:{{x}}、Y:{{y}}</p>
+        <input type="text" v-on:keyup.enter="keyAlert">
+    </div>
+    <script>
+         new Vue({
+            el: '#app',
+            data: {
+                number:0,
+                x:0,
+                y:0
+            },
+            methods: {
+                countUp: function() {
+                    this.number += 1
+                },
+                changeMousePosition: function(event) {
+                    //console.log(event)でeventオブジェクトの中身を見ることができる
+                    this.x = event.clientX;
+                    this.y = event.clientY;
+                },
+                keyAlert: function() {
+                    alert('アラート');
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -38,7 +38,7 @@ dataインスタンスにデータを持たせることができる
 reveseMeaage→buttonクリック時のイベント  
 
 また、上記の例だとvue.jsをURLで指定していますが、[公式サイト](https://v2.ja.vuejs.org/v2/guide/installation.html)  
-からvue.jsを指定して、scriptタブの部分をローカルに落としたvue.jsを指定することで実行可能になる  
+からvue.jsをインストールして、scriptタブの部分をローカルに落としたvue.jsを指定することで実行可能になる  
 
 ## 各章  
 

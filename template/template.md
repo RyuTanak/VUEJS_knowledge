@@ -456,3 +456,178 @@ Googleのリンクを作りつつ、googleのサイトには飛ばしたくな�
 ```
 
 ## キー修飾子  
+キーアップやキーダウンのキーボード操作に関するイベント  
+keyup→キーボードを押して離した瞬間に発生するイベント  
+
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを載せてください
+        <span v-on:mousemove.stop>反応しないでください</span>
+    </p>
+    <a v-on:click.prevent href="https://google.com">Google</a>
+    <p>X:{{x}}、Y:{{y}}</p>
+    <input type="text" v-on:keyup.enter="myAlert">
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        },
+        //引数の場所はどこでもいい
+        changeMousePosition: function(divide, event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        },
+        myAlert: function() {
+            alert('アラート');
+        }
+    }
+ })
+```
+keyup.enterでエンターを押したときだけアラートを出すようにできる。  
+繋げることもできる→keyup.space.enter　　
+
+## v-onディレクティブの引数を動的に表現する  
+
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:[event]="countUp(2)">カウントアップ</button>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        event: 'click'
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        }
+    }
+ })
+```
+## @を使ってv-onを省略  
+
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button @[event]="countUp(2)">カウントアップ</button>
+    <button @click="countUp(2)">カウントアップ</button>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        event: 'click'
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        }
+    }
+ })
+```
+
+## v-modelを使用した双方向バインディング  
+
+v-modelとは  
+双方向データバインディングを作成する  
+データバインディングとは  
+抽象的な言葉で、html部分とjs部分が結合（バインディング）していること  
+
+
+```html
+<div id="app">
+    <h1>{{message}}</h1>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        message: 'こんにちは'
+    }
+ })
+```
+message部分の「こんにちは」を「こんばんは」に変える時  
+jsのmessageを「こんばんは」にかえれば対応可能だが、jsをそのままで対応する方法がある  
+
+```html
+<div id="app">
+    <input type="text" v-model="message">
+    <h1>{{message}}</h1>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        message: 'こんにちは'
+    }
+ })
+```
+これでテキスト部分に文字を打つことで、こんばんはにすることができる。  
+
+## computedプロパティを使って、動的なデータを表現する  
+簡単なカウントアップのプログラムを作ってみる  
+```html
+<div id="app">
+    <p>{{count}}</p>
+    <button @click="counter += 1">+1</button>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        counter: 1
+    }
+ })
+```
+ここにカウントが3以下であれば、3以下ですと表示し、それ以上だと別の文字を表示する仕組みを取り入れる  
+簡単な例だと、  
+```html
+<p>{{counter > 3 ? '3より上' : '3以下'}}</p>
+```
+でできるが、もっと簡単な方法  
+
+```html
+<div id="app">
+    <p>{{count}}</p>
+    <button @click="counter += 1">+1</button>
+    <p>{{lessThanThree}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        counter: 1
+    },
+    computed: {
+        lessThanThree: function() {
+            return this.conter > 3 ? '3より上' : '3以下'
+        }
+    }
+ })
+```
+dataの部分ではあくまでも初期値みたいな扱いしか出来なくて、thisをつけても他のdataプロパティにはアクセスできない  
+そういう時に、conputedプロパティを使用する  
+動的なプロパティなので、関数にすること、戻り値が必須などがある。  
+s
