@@ -144,7 +144,7 @@ htmlを組み込めるイメージ
     <a :href="url">Google</a>
 </div>
 ```
-まら、v-bindは省略可能である  
+また、v-bindは省略可能である  
 
 ## v-bindの応用  
 v-bindの引数を動的に表現することもできる  
@@ -211,3 +211,136 @@ hrefに限らず他の要素にも使える
 
 ## v-on  
 ボタンを押すと数字がカウントアップされるアプリを作ってみる  
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="number += 1">カウントアップ</button>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0
+    }
+ })
+```
+いろんな書き方があるよ(上の書き方はあまりしない)  
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp">カウントアップ</button>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0
+    },
+    methods: {
+        countUp: function() {
+            this.number += 1
+        }
+    }
+ })
+```
+
+v-onの後ろに書くことのできるDOMイベントの[公式サイト](https://developer.mozilla.org/en-US/docs/Web/Events)  
+
+## イベントオブジェクトの取得方法  
+イベント発生時のイベントに関する全ての情報（マウスの位置とか）が入っているオブジェクトのこと  
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition">マウスを載せてください</p>
+    <p>X:{{x}}、Y:{{y}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function() {
+            this.number += 1
+        },
+        changeMousePosition: function(event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        }
+    }
+ })
+```
+changeMousePositionの引数にあるeventにイベントオブジェクトが格納されている  
+
+## v-onの関数に引数を持たせる  
+イベントオブジェクトを使うときは$eventのように書く  
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを載せてください</p>
+    <p>X:{{x}}、Y:{{y}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        },
+        //引数の場所はどこでもいい
+        changeMousePosition: function(divide, event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        }
+    }
+ })
+```
+
+## イベント修飾子  
+イベント修飾子→イベントオブジェクトにつけるメソッド  
+例）event.stopPropagetion とか  
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを載せてください</p>
+    <p>X:{{x}}、Y:{{y}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        },
+        //引数の場所はどこでもいい
+        changeMousePosition: function(divide, event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        }
+    }
+ })
+```
