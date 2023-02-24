@@ -344,3 +344,115 @@ changeMousePositionの引数にあるeventにイベントオブジェクトが�
     }
  })
 ```
+
+## イベント修飾子を更に詳しく  
+
+### stopPropagation  
+
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを載せてください
+        <span v-on:click="noEvent">反応しないでください</span>
+    </p>    
+    <p>X:{{x}}、Y:{{y}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        },
+        //引数の場所はどこでもいい
+        changeMousePosition: function(divide, event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        },
+        noEvent: function(event) {
+            event.stopPropagation()
+        }
+    }
+ })
+```
+event.stopPropagetion()でmousemovイベントを止めることができる。  
+更に、省略して書きこともできる  
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを載せてください
+        <span v-on:mousemove.stop>反応しないでください</span>
+    </p>    
+    <p>X:{{x}}、Y:{{y}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        },
+        //引数の場所はどこでもいい
+        changeMousePosition: function(divide, event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        }
+    }
+ })
+```
+
+### preventDefault  
+Googleのリンクを作りつつ、googleのサイトには飛ばしたくないとき  
+
+```html
+<div id="app">
+    <p>現在{{number}}回クリックされています</p>
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを載せてください
+        <span v-on:mousemove.stop>反応しないでください</span>
+    </p>
+    <a v-on:click.prevent href="https://google.com">Google</a>
+    <!--繋げることをできる。順番も関係ない-->
+    <a v-on:click.prevent.stop href="https://google.com">Google</a>
+    <p>X:{{x}}、Y:{{y}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        number:0,
+        x:0,
+        y:0
+    },
+    methods: {
+        countUp: function(times) {
+            this.number += 1 * times
+        },
+        //引数の場所はどこでもいい
+        changeMousePosition: function(divide, event) {
+            //console.log(event)でeventオブジェクトの中身を見ることができる
+            this.x = event.clientX;
+            this.y = event.clientY;
+        }
+    }
+ })
+```
+
+## キー修飾子  
