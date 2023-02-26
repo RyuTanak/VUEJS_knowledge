@@ -630,4 +630,89 @@ jsのmessageを「こんばんは」にかえれば対応可能だが、jsをそ
 dataの部分ではあくまでも初期値みたいな扱いしか出来なくて、thisをつけても他のdataプロパティにはアクセスできない  
 そういう時に、conputedプロパティを使用する  
 動的なプロパティなので、関数にすること、戻り値が必須などがある。  
-s
+
+## computedとmethodの違い  
+
+```html
+<div id="app">
+    <p>{{count}}</p>
+    <button @click="counter += 1">+1</button>
+    <p>{{lessThanThreeComputed}}</p>
+    <p>{{lessThanThreeMethod()}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        counter: 1
+    },
+    computed: {
+        lessThanThreeComputed: function() {
+            return this.conter > 3 ? '3より上' : '3以下'
+        }
+    },
+    methods: {
+        lessThanThreeMethod: function() {
+            return this.conter > 3 ? '3より上' : '3以下'
+        }
+    }
+ })
+```
+上記の書き方だと、computedとmethodは同じ動きをする  
+
+computedの方は、依存関係に基づきデータがキャッシュされる  
+…よくわからない  
+テンプレートの方に直接メソッドを書いてしまうと、画面再描画ごとメソッドが呼ばれてしまう。  
+computedであると、その関数の中にある値だけが変更されたときに、実行される  
+
+
+## watcherを使って、データ変更時に特定の処理をさせる  
+→使いどころがよくわからん  
+からパス
+
+## 括弧などの話  
+```html
+<div id="app">
+    <p>{{count}}</p>
+    <button @click="countUp">+1</button>
+    <button @click="countUp()">+1</button>
+    <p>{{doubleCounterComputed}}</p>
+    <p>{{doubleCounterMethod()}}</p>
+</div>
+```
+```js
+ new Vue({
+    el: '#app',
+    data: {
+        counter: 0
+    },
+    computed: {
+        doubleCounterComputed: function() {
+            return this.conter * 2;
+        }
+    },
+    methods: {
+        countUp: function() {
+            this.conter += 1;
+        },
+        doubleCounterMethod: function() {
+            return this.conter * 2;
+        }
+
+    }
+ })
+```
+computedには（）を付けない  
+methodには（）をつける  
+click部分は（）をつけてもつけなくてもOK  
+```
+こちらはvue.jsの仕様としてcountUpを呼んでいる
+<button @click="countUp">+1</button>
+こちらは、javascriptの構文としてcountUpを呼んでいる
+<button @click="countUp()">+1</button>
+```
+
+## クラスのバインディング  
+[png](../png/1.png)  
+[png](../png/2.png)  
