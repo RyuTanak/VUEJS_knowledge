@@ -10,10 +10,28 @@
     <script src="../vue.js"></script>
 
     <div id="app">
+        <!--これでコンポーネントをオブジェクトとして使えるようになる-->
+        <my-component></my-component>
+        <my-component></my-component>
+        <my-component></my-component>
     </div>
     <script>
+        Vue.component('my-component', {
+            //関数にしないといけない
+            data: function() {
+                return {
+                    number: 12
+                }
+            },
+            template: '<p>いいね（{{number}}）</p>'
+        })
+        
         new Vue({
             el: '#app'
+            //data: {
+            //    number :12
+            //},
+            //template: '<p>いいね（{{number}}）</p>'
         })
     </script>
 </body>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <LikeHeader></LikeHeader>
-    <LikeNumber></LikeNumber>
+    <LikeNumber num="6"></LikeNumber>
   </div>
 </template>
 
