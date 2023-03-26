@@ -70,5 +70,69 @@ active-class:このroter-linkがアクティブの時にクラスを有効化す
 
 exact:URLが完全一致でアクティブになる  
 
-## コードからURLを切り替える  
+# router.jsとvue.config.jsの違いをまとめる  
+
+## router.jsとは  
+```
+URLとvue.jsのプロジェクトを関連付けるもの
+```
+## どう使うか  
+まず、vue-routerパッケージをインストールする必要がある  
+```
+npm install vue-router
+```
+
+どう使うか
+→設定ファイルは[こちら](../udemy-router/src/router.js)を参照  
+
+```js
+Vue.use(Router)
+```
+Vue.useはVue.jsの公式ライブラリを使うときに設定。axiosなどのVue.jsだけのライブラリでない場合は、普通にimportを書く  
+
+```js
+import Home from ./home.vue
+import User from ./user.vue
+
+New Router({
+    routes[
+        {
+            path: "/",
+            component: "Home"
+        },
+        {
+            path: "/user",
+            component: "User"
+        },
+    ]
+})
+```
+このroutesに、このURLの場合はこのコンポーネントを表示する。といった設定を記載してく。  
+基本のパラメータは二つで、このURLは（path）このコンポーネント（component）を表示する。となる。  
+
+上記はrouterをどう使うかを定義したファイいるであり、実際に適用させる設定はまだ出来ていない。  
+どこで適用させるか→main.js  
+
+```js
+import router from ./router
+
+new Vue({
+    router: router,  //←これ　ES6の書き方だと、routerと1つに省略できる。
+    render: h => h(App),
+}).$mount('#app');
+```
+
+実はまだ、設定は終わりではなくてapp.vueに次の設定をする必要がある
+```html
+<template>
+  <div id="app">
+    <router-view/>
+  </div>
+</template>
+```
+URLが変更されることによって、<router-view/>部分がコンポーネントとして動的に変更される。  
+
+また、vue-routerはどんなURLが来てもindex.htmlを返すようになっている。  
+
+
 
